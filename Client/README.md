@@ -41,7 +41,6 @@ cmake --build build
 
 ## Deploy
 
-
 To deploy the server you need to have installed:
 
 - docker
