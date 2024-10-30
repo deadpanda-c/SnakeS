@@ -17,9 +17,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          submodules: false
 
       - name: Build docker image
         run: timeout 5m docker build -t c_snakes .
-
-      - name: Cleanup docker
-        run: docker system prune -f
