@@ -1,9 +1,12 @@
 #ifndef ENUM_HPP
 #define ENUM_HPP
 
-enum CellType {
-    VOID,
-    APPLE,
+enum InputEnum {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    NONE
 };
 
 #endif // ENUM_HPP
