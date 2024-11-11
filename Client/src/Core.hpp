@@ -28,18 +28,28 @@ class Core
         void run();
     
     private:
-        void _draw(); // Not defined yet
+        void _setup();
+        void _draw();
         void _update(); // Not defined yet
         void _setSnake(int id, std::vector<std::pair<int, int>> snakePos); // Not defined yet
         void _setApple(std::pair<int, int> applePos); // Not defined yet
+        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _loadSprite(const std::string &path);
+        
+        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _sprite_middle_snake;
+        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _sprite_head_snake;
+        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _sprite_tail_snake;
+        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _sprite_angle_snake;
+        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _sprite_apple;
+
 
         sf::TcpSocket _socket;
         sf::RenderWindow _window;
         sf::Event _event;
         sf::Vector2<int> _windowSize;
         sf::Vector2<int> _gameSize;
-        std::vector<std::vector<sf::RectangleShape>> _snake;
-        sf::RectangleShape _apple;
+        std::vector<std::vector<sf::Vector2i>> _pos_snakes;
+        sf::Vector2i _pos_apple;
+        float _scale;
 };
 
 #endif // CORE_HPP
