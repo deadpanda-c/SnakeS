@@ -1,12 +1,15 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.25)
+project(binary_protocol)
 
-project(communications)
+set(CMAKE_CXX_STANDARD 11)
+add_compile_options(-Wall -Wextra -Wpedantic -Werror -fno-gnu-unique)
 
-file(GLOB_RECURSE SOURCES src/*.cpp)
-
+# Include directories
 include_directories(./include)
+set(SOURCES
+    src/BinaryPacket.cpp
+)
 
-add_library(communications SHARED ${SOURCES})
-
-add_executable(sample main.cpp)
-target_link_libraries(sample communications)
+# Create the library target
+add_library(binary_protocol STATIC ${SOURCES})
+target_include_directories(binary_protocol PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

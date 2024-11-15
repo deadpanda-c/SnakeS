@@ -32,10 +32,10 @@ sudo apt install \
     libgbm-dev
 ```
 
-To build the client you need to run the following commands:
+To build the client you need to run the following commands from the **root** directory:
 
 ```bash
-cmake -B build
+cmake -B build -D ONLY_CLIENT=true
 cmake --build build
 ```
 
@@ -46,10 +46,10 @@ To deploy the server you need to have installed:
 - docker
 - docker-compose (optional)
 
-To deploy the server you need to run the following commands:
+To deploy the server you need to run the following commands from the **root** directory:
 
 ```bash
-docker build -t c_snakes .
+docker build -f ClientDockerfile -t c_snakes .
 docker run -p 5000:5000 \
     -e DISPLAY \
     --rm -ti --net=host \
@@ -61,4 +61,15 @@ Or you can use docker-compose:
 
 ```bash
 docker compose up
+```
+
+> **Note:**
+> The docker-compose will also deploy the server.
+
+## Usage
+
+To run the client you need to run the following command:
+
+```bash
+./build/bin/c_snakes
 ```

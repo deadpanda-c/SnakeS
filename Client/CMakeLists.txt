@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.25)
 project(c_snakes LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 add_compile_options(-Wall -Wextra -Wpedantic -Werror -fno-gnu-unique)
 
@@ -27,7 +27,8 @@ set(SOURCES
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Link the libraries
-target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
+target_link_libraries(${PROJECT_NAME} PRIVATE binary_protocol sfml-graphics sfml-window sfml-system)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/libs/binary_protocol)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
 if(WIN32)

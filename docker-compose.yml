@@ -1,0 +1,24 @@
+# Description: Docker compose file for the server
+# Usage: docker compose up
+
+services:
+  c_snakes:
+    image: c_snakes
+    build:
+      context: .
+      dockerfile: ./ClientDockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - DISPLAY=host.docker.internal:0.0
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+
+  s_snakes:
+    image: s_snakes
+    build:
+      context: .
+      dockerfile: ./ServerDockerfile
+    ports:
+      - "${SERVER_PORT:-42000}:42000"
+    restart: always

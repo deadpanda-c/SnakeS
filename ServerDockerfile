@@ -9,10 +9,13 @@ RUN apt-get update; apt-get install -y cmake
 COPY . /usr/src/snakes
 WORKDIR /usr/src/snakes
 
+# Remove unused Client files
+RUN rm -rf Client
+
 # This command compiles your app based on the CMakeLists.txt file
-RUN cmake . && make
+RUN cmake . -D ONLY_SERVER=true && make
 
 # This command runs your application, comment out this line to compile only
-CMD ["./s_snakes"]
+CMD ["./bin/s_snakes"]
 
 LABEL Name=s_snakes Version=0.0.1

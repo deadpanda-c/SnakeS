@@ -13,9 +13,12 @@ include_directories("./include")
 add_executable(server
     src/BinaryPacket.cpp
     src/Server.cpp
-    src/GameLogic.cpp
+    src/GameLogic.cpp   
     src/Snake.cpp
     src/main.cpp
 )
 target_link_libraries(server PRIVATE sfml-network sfml-system)
 
+# Link the libraries
+target_link_libraries(${PROJECT_NAME} PRIVATE binary_protocol)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/libs/binary_protocol)

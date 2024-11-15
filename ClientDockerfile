@@ -31,13 +31,16 @@ RUN apt-get update; \
 COPY . /usr/src/snakes
 WORKDIR /usr/src/snakes
 
+# Remove unused Server files
+RUN rm -rf Server
+
 # Generating a universally unique ID for the Container
 RUN  dbus-uuidgen > /etc/machine-id
 
 # This command compiles your app based on the CMakeLists.txt file
-RUN cmake . && make
+RUN cmake . -D ONLY_CLIENT=true && make
 
 # This command runs your application, comment out this line to compile only
-CMD ["./c_snakes"]
+CMD ["./bin/c_snakes"]
 
 LABEL Name=c_snakes Version=0.0.1

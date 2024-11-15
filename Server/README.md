@@ -10,10 +10,10 @@ To build the server you need to have installed:
 - CMake
 - C++ compiler
 
-To build the server you need to run the following commands:
+To build the server you need to run the following commands from the **root** directory:
 
 ```bash
-cmake -B build
+cmake -B build -D ONLY_SERVER=true
 cmake --build build
 ```
 
@@ -24,10 +24,10 @@ To deploy the server you need to have installed:
 - docker
 - docker-compose (optional)
 
-To deploy the server you need to run the following commands:
+To deploy the server you need to run the following commands from the **root** directory:
 
 ```bash
-docker build -t snakes-server .
+docker build -f ServerDockerfile -t snakes-server .
 docker run -p 42000:42000 snakes-server
 ```
 
@@ -35,4 +35,15 @@ Or you can use docker-compose:
 
 ```bash
 docker compose up
+```
+
+> **Note:**
+> The docker-compose will also deploy the client.
+
+## Usage
+
+To run the server you need to run the following command:
+
+```bash
+./build/bin/s_snakes
 ```
