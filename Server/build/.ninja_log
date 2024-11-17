@@ -1,0 +1,13 @@
+# ninja log v6
+1	570	1731859600924159279	CMakeFiles/server.dir/src/main.cpp.o	7e866f4653cb8a5c
+1	418	1731859600924159279	CMakeFiles/server.dir/src/Server.cpp.o	f452941c9787dfb7
+1	404	1731859600924159279	CMakeFiles/server.dir/src/Snake.cpp.o	585da7741b437313
+387	434	1731847725481383408	/home/a/FF/SnakeS/Server/server	2ac38781ff09995a
+2	557	1731845758057090541	CMakeFiles/Server.dir/src/main.cpp.o	55958c2e9bbf6bb6
+1	430	1731845758057090541	CMakeFiles/Server.dir/src/Server.cpp.o	2e61d1c4f083f86f
+557	603	1731845758613755626	/home/a/FF/SnakeS/Server/Server	229b01fe479244a1
+1	286	1731845758057090541	CMakeFiles/Server.dir/src/Snake.cpp.o	202d9bdb4f86f41c
+1	384	1731859600924159279	CMakeFiles/server.dir/src/GameLogic.cpp.o	ca0981b78e6d18a7
+1	377	1731845758057090541	CMakeFiles/Server.dir/src/GameLogic.cpp.o	e36c1d1e3aecb11f
+1	349	1731859648430568956	CMakeFiles/server.dir/src/BinaryPacket.cpp.o	40554cc43be2343b
+349	395	1731859648780567163	/home/a/FF/SnakeS/Server/server	5129a3d9c1b30605
