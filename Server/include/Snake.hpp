@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <BinaryPacket.hpp>
+#include "BinaryPacket.hpp"
 #include <sys/types.h>
 #include <vector>
 
@@ -41,9 +41,9 @@ class Snake
 
     private:
         bool m_is_dead{false};
-        short m_id{0};
         uint m_head_x{0};
         uint m_head_y{0};
         orient m_head_orient{0};
+        short m_id{0};
         std::vector<Body> m_body_pos;
 };

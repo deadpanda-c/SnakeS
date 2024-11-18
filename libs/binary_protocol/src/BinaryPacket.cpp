@@ -1,4 +1,5 @@
 #include "BinaryPacket.hpp"
+#include <stdexcept>
 
 BinaryPacket::BinaryPacket(PacketType type) : type_(type) {}
 

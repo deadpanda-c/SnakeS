@@ -1,0 +1,32 @@
+name: server tests
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+jobs:
+  test-server-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: false
+
+      - name: Deploy docker compose
+        run: timeout 5m docker compose -f docker-compose.dev.yml up -d --build
+
+      - name: Check if all services are up and running
+        run: |
+          if [ $(docker-compose -f docker-compose.dev.yml ps | grep -c "Up") -ne $(docker-compose -f docker-compose.dev.yml config --services | wc -l) ]; then
+            echo "Not all services are running"
+            exit 1
+          fi
+
+      - name: Stop containers
+        if: always()
+        run: docker compose -f docker-compose.dev.yml down

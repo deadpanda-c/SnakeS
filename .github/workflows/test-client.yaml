@@ -1,0 +1,21 @@
+name: client tests
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+jobs:
+  test-client-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: false
+
+      - name: Build docker image
+        run: timeout 5m docker build -f ClientDockerfile -t c_snakes .

@@ -1,0 +1,22 @@
+name: server tests
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+jobs:
+  test-server-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: false
+
+      - name: Build docker image
+        run: timeout 5m docker build -f ServerDockerfile -t snakes-server .
+

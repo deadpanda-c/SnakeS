@@ -3,7 +3,7 @@
 ** Snake
 */
 
-#include <Snake.hh>
+#include "Snake.hpp"
 #include <algorithm>
 
 Snake::Snake(uint head_x, uint head_y, orient head_orient, short id)
@@ -48,7 +48,7 @@ void Snake::move()
         x_value = 1;
     if (m_head_orient == orient::WEST)
         x_value = -1;
-    for (ulong i{m_body_pos.size() - 1}; i >= 0; i--) {
+    for (ulong i{m_body_pos.size() - 1}; i > 0; i--) {
         if (i == 0) {
             m_body_pos[i].s_orient = m_head_orient;
             m_body_pos[i].s_pos_x = m_head_x;
