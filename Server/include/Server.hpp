@@ -5,10 +5,9 @@
 
 #pragma once
 
-#include "GameLogic.hh"
+#include "GameLogic.hpp"
 #include <SFML/Network/TcpListener.hpp>
 #include <SFML/Network/TcpSocket.hpp>
-#include <array>
 #include <string>
 
 class Server

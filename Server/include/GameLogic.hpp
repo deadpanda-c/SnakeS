@@ -6,8 +6,7 @@
 #pragma once
 
 #include <SFML/Network/TcpSocket.hpp>
-#include <Snake.hh>
-#include <array>
+#include "Snake.hpp"
 #include <vector>
 
 struct Coord {

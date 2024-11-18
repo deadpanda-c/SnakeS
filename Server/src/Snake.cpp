@@ -4,7 +4,6 @@
 */
 
 #include <Snake.hh>
-#include <algorithm>
 
 Snake::Snake(uint head_x, uint head_y, orient head_orient, short id)
     : m_head_x{head_x}, m_head_y{head_y}, m_head_orient{head_orient}, m_id{id}

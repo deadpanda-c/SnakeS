@@ -3,11 +3,9 @@
 ** GameLogic
 */
 
-#include <GameLogic.hh>
-#include <SFML/Network/Packet.hpp>
-#include <SFML/Network/SocketSelector.hpp>
-#include <SFML/System/Clock.hpp>
-#include <SFML/System/Time.hpp>
+#include "GameLogic.hh"
+#include <SFML/Network.hpp>
+#include <SFML/System.hpp>
 #include <cstdint>
 #include <ctime>
 

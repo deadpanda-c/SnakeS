@@ -4,9 +4,8 @@
 ** main
 */
 
-#include <SFML/Network.hpp>
-#include <SFML/Network/TcpListener.hpp>
-#include <Server.hh>
+#include "Server.hpp"
+# include <SFML/Network.hpp>
 
 int main(int argc, char **argv)
 {
