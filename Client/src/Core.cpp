@@ -64,6 +64,7 @@ void Core::_setup() {
     _sprite_apple = _loadSprite(APPLE);
 
     // All of the code below is for testing purposes
+    //
     //    S--1 4-1
     //       | | |
     // 8---7 2-3 |
@@ -120,6 +121,20 @@ void Core::_setup() {
 
     };
     _pos_snakes.push_back(snake);
+    for (int i = 0; i < 20; i++) {
+        _pos_snakes.push_back({
+            {12, i},
+            {13, i},
+            {14, i}
+        });
+    }
+    for (int i = 0; i < 20; i++) {
+        _pos_snakes.push_back({
+            {15, i},
+            {16, i},
+            {17, i}
+        });
+    }
 }
 
 void Core::_draw() { // todo: handle of the snake is shorter than 3
@@ -145,6 +160,16 @@ void Core::_draw() { // todo: handle of the snake is shorter than 3
 
     for (std::vector<sf::Vector2i> &snake : _pos_snakes) {
         if (snake.empty()) continue;
+
+        // set the color of the snake depending on its id. the color will be a gradient from red to green to blue
+        float hue = ((&snake - &_pos_snakes[0]) * 1.0f / (_pos_snakes.size() + 1)) + (1.0f / (_pos_snakes.size() + 1));
+        auto colorTuple = HSVtoRGB(hue, 1, 1);
+        sf::Color color(std::get<0>(colorTuple), std::get<1>(colorTuple), std::get<2>(colorTuple));
+
+        _sprite_angle_snake.second.setColor(color);
+        _sprite_middle_snake.second.setColor(color);
+        _sprite_head_snake.second.setColor(color);
+        _sprite_tail_snake.second.setColor(color);
 
         // draw the head
         sf::Vector2i &headPos = snake.front();
