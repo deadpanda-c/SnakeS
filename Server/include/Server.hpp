@@ -9,6 +9,7 @@
 #include <SFML/Network/TcpListener.hpp>
 #include <SFML/Network/TcpSocket.hpp>
 #include <string>
+#include <array>
 
 class Server
 {

@@ -3,11 +3,12 @@
 ** GameLogic
 */
 
-#include "GameLogic.hh"
+#include "GameLogic.hpp"
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
 #include <cstdint>
 #include <ctime>
+#include <array>
 
 GameLogic::GameLogic()
 {
@@ -60,7 +61,7 @@ inline sf::Packet &operator>>(sf::Packet &packet, std::vector<uint8_t> &serializ
 {
     uint8_t x;
 
-    for (int i{0}; i < packet.getDataSize(); i++) {
+    for (std::size_t i{0}; i < packet.getDataSize(); i++) {
         packet >> x;
         serialize_data.emplace_back(x);
     }
@@ -137,7 +138,7 @@ void GameLogic::handle_colision(std::array<sf::TcpSocket, 4> &clients, uint clie
     }
 }
 
-void GameLogic::move_everyone(std::array<sf::TcpSocket, 4> &clients, uint clients_number)
+void GameLogic::move_everyone(__attribute__((unused)) std::array<sf::TcpSocket, 4> &clients, uint clients_number)
 {
     for (uint i{0}; i <= clients_number; i++) {
         if (m_players[i].is_it_dead())
@@ -145,9 +146,8 @@ void GameLogic::move_everyone(std::array<sf::TcpSocket, 4> &clients, uint client
         m_players[i].move();
     }
 }
-void GameLogic::handle_fruit(std::array<sf::TcpSocket, 4> &clients, uint clients_number)
+void GameLogic::handle_fruit(__attribute__((unused)) std::array<sf::TcpSocket, 4> &clients, uint clients_number)
 {
-
     for (uint i{0}; i <= clients_number; i++) {
         if (m_players[i].is_it_dead())
             continue;
