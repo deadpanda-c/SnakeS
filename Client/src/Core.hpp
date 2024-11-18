@@ -13,6 +13,7 @@
 #include <regex>
 
 #include "Enum.hpp"
+#include "Tools.hpp"
 
 class Core
 {

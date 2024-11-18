@@ -16,6 +16,7 @@ find_library(LIBSFML_NETWORK sfml-network)
 set(SOURCES
     src/main.cpp
     src/Core.cpp
+    src/Tools.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
