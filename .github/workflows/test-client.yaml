@@ -10,9 +10,6 @@ on:
 jobs:
   test-client-build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./Client
 
     steps:
       - name: Checkout repository
@@ -21,4 +18,4 @@ jobs:
           submodules: false
 
       - name: Build docker image
-        run: timeout 5m docker build -t c_snakes .
+        run: timeout 5m docker build -f ClientDockerfile -t c_snakes .

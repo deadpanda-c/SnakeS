@@ -10,9 +10,6 @@ on:
 jobs:
   test-server-build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./Server
 
     steps:
       - name: Checkout repository
@@ -21,5 +18,5 @@ jobs:
           submodules: false
 
       - name: Build docker image
-        run: timeout 5m docker build -t s_snakes .
+        run: timeout 5m docker build -f ServerDockerfile -t snakes-server .
 
