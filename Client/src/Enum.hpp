@@ -16,4 +16,11 @@ enum InputEnum {
     NONE
 };
 
+enum LobbyStateEnum {
+    MAIN,
+    CONNECTING,
+    CONNECTED,
+    READY,
+};
+
 #endif // ENUM_HPP
