@@ -16,7 +16,7 @@ Processes the arguments passed to the program
 
 @return: A pair containing the IP address and the port number
 */
-std::pair<std::string, unsigned short> parseArguments(int argc, char **argv);
+std::pair<std::string, ushort> parseArguments(int argc, char **argv);
 
 /*
 // Converts HSV color to RGB

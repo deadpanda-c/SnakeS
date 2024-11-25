@@ -1,6 +1,6 @@
 #include "Tools.hpp"
 
-std::pair<std::string, unsigned short> parseArguments(int argc, char **argv) {
+std::pair<std::string, ushort> parseArguments(int argc, char **argv) {
     // Check if the user wants to see the help message
     if (argc == 2 && (std::string(argv[1]) == "-h" || std::string(argv[1]) == "--help")) {
     std::cout << "Usages:\n"
