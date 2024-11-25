@@ -3,7 +3,7 @@ project(c_SnakeS)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_compile_options(-Wall -Wextra -Wpedantic -Werror -fno-gnu-unique -g)
+add_compile_options(-Wall -Wextra -Wpedantic -Werror -fno-gnu-unique)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
