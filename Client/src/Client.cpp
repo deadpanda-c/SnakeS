@@ -1,1 +1,0 @@
-// comunicate with server
