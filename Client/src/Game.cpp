@@ -22,6 +22,7 @@ std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> Game::_loadSprite(const std:
     
     if (!texture->loadFromFile(path)) {
         std::cerr << "Failed to load texture from " << path << std::endl;
+        texture = nullptr;
     }
     sprite.setTexture(*texture);
     sprite.setScale(_scale / SPRITE_SIZE, _scale / SPRITE_SIZE);
@@ -175,12 +176,13 @@ void Game::_setSnake(uint id, std::vector<sf::Vector2i> snakePos) {
     _pos_snakes[id] = snakePos;
 }
 
-void Game::run() {
+int Game::run() {
     _setup();
 
     while (_window->isOpen()) {
         _update();
         _draw();
     }
+    return 0;
 }
 

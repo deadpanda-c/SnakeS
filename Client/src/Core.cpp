@@ -53,7 +53,7 @@ int Core::_setup() {
 
 int Core::run() {
     if (_setup()) return 1;
-    // _game.run();
-    _lobby.run();
+    if (_lobby.run()) return 0;
+    if (_game.run()) return 0;
     return 0;
 }

@@ -11,9 +11,8 @@
 #include <vector>
 #include <memory>
 
-#include "Enum.hpp"
-
-#define FONT "assets/Minecraft.ttf"
+#include "Constants.hpp"
+#include "Button.hpp"
 
 class Lobby
 {
@@ -36,6 +35,8 @@ class Lobby
         void _drawConnected();
         void _drawReady();
 
+        bool _gameStarted;
+
         sf::Font _font;
         LobbyStateEnum _state;
         std::shared_ptr<sf::TcpSocket> _socket;
@@ -51,10 +52,17 @@ class Lobby
         bool _is_clicking;
 
         // main window
+        std::unique_ptr<Button> _connectButton;
 
         // connecting window
         bool _failed_connection;
+        std::unique_ptr<Button> _cancelButton;
+        std::unique_ptr<Button> _retryButton;
 
+        // connected window
+        std::unique_ptr<Button> _readyButton;
+        int playerID;
+        int playerCount;
 
 };
 

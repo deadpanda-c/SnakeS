@@ -21,6 +21,11 @@ void Lobby::_setup() {
     _state = LobbyStateEnum::MAIN;
     _scale = _windowSize.x / 100;
     _font.loadFromFile(FONT);
+    _connectButton = std::make_unique<Button>(sf::Vector2f(25 * _scale, 65 * _scale), sf::Vector2f(50 * _scale, 12.5 * _scale), "Connect", 8 * _scale);
+    _cancelButton = std::make_unique<Button>(sf::Vector2f(25 * _scale, 79 * _scale), sf::Vector2f(50 * _scale, 12.5 * _scale), "Cancel", 8 * _scale);
+    _retryButton = std::make_unique<Button>(sf::Vector2f(25 * _scale, 59 * _scale), sf::Vector2f(50 * _scale, 12.5 * _scale), "Retry", 8 * _scale);
+    _readyButton = std::make_unique<Button>(sf::Vector2f(25 * _scale, 65 * _scale), sf::Vector2f(50 * _scale, 12.5 * _scale), "Ready", 8 * _scale);
+
 }
 
 void Lobby::_draw() {
@@ -45,29 +50,15 @@ void Lobby::_draw() {
 }
 
 void Lobby::_drawMain() {
-    sf::RectangleShape button(sf::Vector2f(50 * _scale, 12.5 * _scale));
-    sf::Text buttonText("Connect", _font, 8 * _scale);
+    bool status = _connectButton->update(_mousePos, _is_clicking);
+    _connectButton->draw(*_window);
 
-    buttonText.setFillColor(sf::Color::White);
-    buttonText.setPosition(34 * _scale, 66 * _scale);
-    button.setPosition(25 * _scale, 65 * _scale);
-    button.setOutlineColor(sf::Color::White);
-    button.setOutlineThickness(10);
-
-    if (button.getGlobalBounds().contains(_mousePos.x, _mousePos.y)) {
-        button.setFillColor(sf::Color(64, 64, 64));
-        if (_is_clicking) {
-            _state = LobbyStateEnum::CONNECTING;
-            _failed_connection = false;
-            _is_clicking = false;
-            std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
-        }
-    } else {
-        button.setFillColor(sf::Color::Black);
+    if (status) {
+        _state = LobbyStateEnum::CONNECTING;
+        _failed_connection = false;
+        _is_clicking = false;
+        std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
     }
-
-    _window->draw(button);
-    _window->draw(buttonText);
 }
 
 void Lobby::_drawConnecting() {
@@ -83,56 +74,23 @@ void Lobby::_drawConnecting() {
             _failed_connection = true;
         }
     } else {
-        sf::RectangleShape retryButton(sf::Vector2f(50 * _scale, 12.5 * _scale));
-        sf::Text retryButtonText("Retry", _font, 8 * _scale);
-        sf::Text errorText("Failed to connect to the server", _font, 6 * _scale);
+        bool statusRetry = _retryButton->update(_mousePos, _is_clicking);
+        _retryButton->draw(*_window);
 
-        retryButtonText.setFillColor(sf::Color::White);
-        retryButtonText.setPosition(38 * _scale, 60 * _scale);
-        retryButton.setPosition(25 * _scale, 59 * _scale);
-        retryButton.setOutlineColor(sf::Color::White);
-        retryButton.setOutlineThickness(10);
-
-        errorText.setFillColor(sf::Color::White);
-        errorText.setPosition(6 * _scale, 45 * _scale);
-
-        if (retryButton.getGlobalBounds().contains(_mousePos.x, _mousePos.y)) {
-            retryButton.setFillColor(sf::Color(64, 64, 64));
-            if (_is_clicking) {
-                _failed_connection = false;
-                _is_clicking = false;
-            }
-        } else {
-            retryButton.setFillColor(sf::Color::Black);
+        if (statusRetry) {
+            _failed_connection = false;
+            _is_clicking = false;
         }
 
-        _window->draw(retryButton);
-        _window->draw(retryButtonText);
-        _window->draw(errorText);
+        bool statusCancel = _cancelButton->update(_mousePos, _is_clicking);
+        _cancelButton->draw(*_window);
 
-        // draw a cancel button
-        sf::RectangleShape cancelButton(sf::Vector2f(50 * _scale, 12.5 * _scale));
-        sf::Text cancelButtonText("Cancel", _font, 8 * _scale);
-
-        cancelButtonText.setFillColor(sf::Color::White);
-        cancelButtonText.setPosition(36 * _scale, 80 * _scale);
-        cancelButton.setPosition(25 * _scale, 79 * _scale);
-        cancelButton.setOutlineColor(sf::Color::White);
-        cancelButton.setOutlineThickness(10);
-
-        if (cancelButton.getGlobalBounds().contains(_mousePos.x, _mousePos.y)) {
-            cancelButton.setFillColor(sf::Color(64, 64, 64));
-            if (_is_clicking) {
-                _state = LobbyStateEnum::MAIN;
-                _is_clicking = false;
-                std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
-            }
-        } else {
-            cancelButton.setFillColor(sf::Color::Black);
+        if (statusCancel) {
+            _state = LobbyStateEnum::MAIN;
+            _is_clicking = false;
+            std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
         }
 
-        _window->draw(cancelButton);
-        _window->draw(cancelButtonText);
     }
 }
 
@@ -142,6 +100,17 @@ void Lobby::_drawConnected() {
     // if the user clicks on "cancel" button, change the state to MAIN
     // need to display the snakes that connects to the server
     // need to display the number of players connected
+
+    // listen to the server for the number of players connected and the player ID
+
+    bool statusReady = _readyButton->update(_mousePos, _is_clicking);
+    _readyButton->draw(*_window);
+
+    if (statusReady) {
+        _state = LobbyStateEnum::READY;
+        _is_clicking = false;
+        std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
+    }
 }
 
 void Lobby::_drawReady() {
@@ -179,6 +148,9 @@ int Lobby::run() {
     while (_window->isOpen()) {
         _update();
         _draw();
+        if (_gameStarted) {
+            return 0;
+        }
     }
-    return 0;
+    return 1;
 }
