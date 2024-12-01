@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(c_SnakeS)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 add_compile_options(-Wall -Wextra -Wpedantic -Werror -fno-gnu-unique)
 
@@ -19,6 +19,7 @@ set(SOURCES
     src/Tools.cpp
     src/Game.cpp
     src/Lobby.cpp
+    src/Button.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

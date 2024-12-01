@@ -12,7 +12,7 @@
 #include <mutex>
 #include <regex>
 
-#include "Enum.hpp"
+#include "Constants.hpp"
 #include "Tools.hpp"
 
 class Game
@@ -25,7 +25,7 @@ class Game
         void setGameSize(sf::Vector2<uint> gameSize);
         void setSocket(std::shared_ptr<sf::TcpSocket> socket);
         void setIpPort(std::shared_ptr<std::pair<std::string, ushort>> ipPort);
-        void run();
+        int run();
     
     private:
         void _setup();

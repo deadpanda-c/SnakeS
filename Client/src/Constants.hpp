@@ -1,5 +1,5 @@
-#ifndef ENUM_HPP
-#define ENUM_HPP
+#ifndef CONSTANTS_HPP
+#define CONSTANTS_HPP
 
 #define SPRITE_SIZE 16
 #define SNAKE_MIDDLE "assets/snake_middle.png"
@@ -7,6 +7,7 @@
 #define SNAKE_TAIL "assets/snake_tail.png"
 #define SNAKE_ANGLE "assets/snake_angle.png"
 #define APPLE "assets/apple.png"
+#define FONT "assets/Minecraft.ttf"
 
 enum InputEnum {
     UP,
@@ -23,4 +24,4 @@ enum LobbyStateEnum {
     READY,
 };
 
-#endif // ENUM_HPP
+#endif // CONSTANTS_HPP
