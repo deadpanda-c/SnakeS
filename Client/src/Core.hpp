@@ -16,8 +16,6 @@ class Core {
         void setWindowSize(std::pair<uint, uint> windowSize);
         void setGameSize(std::pair<uint, uint> gameSize);
         void setIpPort(std::pair<std::string, ushort> ipPort);
-
-
         int run();
 
     private:
