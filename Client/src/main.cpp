@@ -1,7 +1,7 @@
 #include "Core.hpp"
 
 int main(int argc, char **argv) {
-    std::pair<std::string, ushort> ipPort = parseArguments(argc, argv);
+    std::pair<std::string, ushort> ipPort = Tools::parseArguments(argc, argv);
     Core core;
 
     if (ipPort.first == "__EXIT__")

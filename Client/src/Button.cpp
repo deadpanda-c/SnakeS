@@ -7,7 +7,7 @@ Button::Button(sf::Vector2f position, sf::Vector2f size, std::string text, int t
     _button.setOutlineColor(sf::Color::White);
     _button.setOutlineThickness(10);
 
-    _font.loadFromFile(FONT);
+    _font.loadFromFile(Constants::FONT);
     _buttonText.setFont(_font);
     _buttonText.setString(text);
     _buttonText.setCharacterSize(textSize);

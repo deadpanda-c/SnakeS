@@ -34,10 +34,12 @@ int Core::_setup() {
     }
     _socket = std::make_shared<sf::TcpSocket>();
     
-    icon.loadFromFile(APPLE);
+    icon.loadFromFile(Constants::APPLE);
     _window = std::make_shared<sf::RenderWindow>(sf::VideoMode(_windowSize.first, _windowSize.second), "SnakeS");
-    _window->setFramerateLimit(60);
+    _window->setFramerateLimit(240);
     _window->setIcon(16, 16, icon.getPixelsPtr());
+    _window->setKeyRepeatEnabled(false);
+    _window->setMouseCursorVisible(false);
 
     _game.setSocket(_socket);
     _game.setIpPort(_ipPort);
@@ -54,6 +56,7 @@ int Core::_setup() {
 int Core::run() {
     if (_setup()) return 1;
     if (_lobby.run()) return 0;
+    std::cout << "Game started" << std::endl;
     if (_game.run()) return 0;
     return 0;
 }

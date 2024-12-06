@@ -12,6 +12,7 @@
 #include <memory>
 
 #include "Constants.hpp"
+#include "Tools.hpp"
 #include "Button.hpp"
 
 class Lobby
@@ -50,8 +51,10 @@ class Lobby
         sf::Vector2i _mousePos;
         sf::Vector2i _lastClick;
         bool _is_clicking;
+        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _cursor;
 
         // main window
+        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _main_background;
         std::unique_ptr<Button> _connectButton;
 
         // connecting window

@@ -16,20 +16,6 @@ void Game::setIpPort(std::shared_ptr<std::pair<std::string, ushort>> ipPort) {
     _ipPort = ipPort;
 }
 
-std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> Game::_loadSprite(const std::string &path) {
-    std::shared_ptr<sf::Texture> texture = std::make_shared<sf::Texture>();
-    sf::Sprite sprite;
-    
-    if (!texture->loadFromFile(path)) {
-        std::cerr << "Failed to load texture from " << path << std::endl;
-        texture = nullptr;
-    }
-    sprite.setTexture(*texture);
-    sprite.setScale(_scale / SPRITE_SIZE, _scale / SPRITE_SIZE);
-    sprite.setOrigin(SPRITE_SIZE / 2, SPRITE_SIZE / 2);
-    return std::make_pair(texture, sprite);
-}
-
 void Game::setWindow(std::shared_ptr<sf::RenderWindow> window) {
     _window = window;
 }
@@ -39,11 +25,11 @@ void Game::_setup() {
     _scale = _windowSize.x / _gameSize.x;
 
     // load all the sprites and textures
-    _sprite_middle_snake = _loadSprite(SNAKE_MIDDLE);
-    _sprite_head_snake = _loadSprite(SNAKE_HEAD);
-    _sprite_tail_snake = _loadSprite(SNAKE_TAIL);
-    _sprite_angle_snake = _loadSprite(SNAKE_ANGLE);
-    _sprite_apple = _loadSprite(APPLE);
+    _sprite_middle_snake = Tools::loadSprite(Constants::SNAKE_MIDDLE, _scale / Constants::SPRITE_SIZE);
+    _sprite_head_snake = Tools::loadSprite(Constants::SNAKE_HEAD, _scale / Constants::SPRITE_SIZE);
+    _sprite_tail_snake = Tools::loadSprite(Constants::SNAKE_TAIL, _scale / Constants::SPRITE_SIZE);
+    _sprite_angle_snake = Tools::loadSprite(Constants::SNAKE_ANGLE, _scale / Constants::SPRITE_SIZE);
+    _sprite_apple = Tools::loadSprite(Constants::APPLE, _scale / Constants::SPRITE_SIZE);
 
     for (int j = 0; j < 6; j++) {
         for (int i = 0; i < 20; i++) {
@@ -54,6 +40,7 @@ void Game::_setup() {
             });
         }
     }
+    _setApple({0, 0});
 }
 
 void Game::_draw() { // todo: handle of the snake is shorter than 3
@@ -83,7 +70,7 @@ void Game::_draw() { // todo: handle of the snake is shorter than 3
 
         // set the color of the snake depending on its id. the color will be a gradient from red to green to blue
         float hue = ((&snake - &_pos_snakes[0]) * 1.0f / (_pos_snakes.size() + 1)) + (1.0f / (_pos_snakes.size() + 1));
-        auto colorTuple = HSVtoRGB(hue, 1, 1);
+        auto colorTuple = Tools::HSVtoRGB(hue, 1, 1);
         sf::Color color(std::get<0>(colorTuple), std::get<1>(colorTuple), std::get<2>(colorTuple));
 
         _sprite_angle_snake.second.setColor(color);
@@ -174,6 +161,10 @@ void Game::_setSnake(uint id, std::vector<sf::Vector2i> snakePos) {
     if (id >= _pos_snakes.size())
         _pos_snakes.resize(id + 1);
     _pos_snakes[id] = snakePos;
+}
+
+void Game::_setApple(sf::Vector2i applePos) {
+    _pos_apple = applePos;
 }
 
 int Game::run() {

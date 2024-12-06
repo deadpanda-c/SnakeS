@@ -33,7 +33,6 @@ class Game
         void _update();
         void _setSnake(uint id, std::vector<sf::Vector2i> snakePos);
         void _setApple(sf::Vector2i applePos); // Not defined yet
-        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _loadSprite(const std::string &path);
 
         std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _sprite_middle_snake;
         std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _sprite_head_snake;
