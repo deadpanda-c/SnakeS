@@ -28,8 +28,8 @@ void Lobby::_setup() {
     _cancelButton = std::make_unique<Button>(sf::Vector2f(32 * _scale, 105 * _scale), sf::Vector2f(64 * _scale, 12.5 * _scale), "Cancel", 8 * _scale);
     _readyButton = std::make_unique<Button>(sf::Vector2f(32 * _scale, 80 * _scale), sf::Vector2f(64 * _scale, 12.5 * _scale), "Ready", 8 * _scale);
 
-    _main_background = Tools::loadSprite(Constants::MAIN_BACKGROUND, _scale);
-    _main_background.second.setPosition(_windowSize.x / 2, _windowSize.y / 2);
+    _mainBackground = Tools::loadSprite(Constants::MAIN_BACKGROUND, _scale);
+    _mainBackground.second.setPosition(_windowSize.x / 2, _windowSize.y / 2);
 
     _cursor = Tools::loadSprite(Constants::CURSOR, _scale / 2.0);
 }
@@ -58,15 +58,15 @@ void Lobby::_draw() {
 }
 
 void Lobby::_drawMain() {
-    _window->draw(_main_background.second);
+    _window->draw(_mainBackground.second);
 
-    bool status = _connectButton->update(_mousePos, _is_clicking);
+    bool status = _connectButton->update(_mousePos, _isClicking);
     _connectButton->draw(*_window);
 
     if (status) {
         _state = LobbyStateEnum::CONNECTING;
         _failed_connection = false;
-        _is_clicking = false;
+        _isClicking = false;
         std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
     }
 }
@@ -84,20 +84,20 @@ void Lobby::_drawConnecting() {
             _failed_connection = true;
         }
     } else {
-        bool statusRetry = _retryButton->update(_mousePos, _is_clicking);
+        bool statusRetry = _retryButton->update(_mousePos, _isClicking);
         _retryButton->draw(*_window);
 
         if (statusRetry) {
             _failed_connection = false;
-            _is_clicking = false;
+            _isClicking = false;
         }
 
-        bool statusCancel = _cancelButton->update(_mousePos, _is_clicking);
+        bool statusCancel = _cancelButton->update(_mousePos, _isClicking);
         _cancelButton->draw(*_window);
 
         if (statusCancel) {
             _state = LobbyStateEnum::MAIN;
-            _is_clicking = false;
+            _isClicking = false;
             std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
         }
 
@@ -113,12 +113,12 @@ void Lobby::_drawConnected() {
 
     // listen to the server for the number of players connected and the player ID
 
-    bool statusReady = _readyButton->update(_mousePos, _is_clicking);
+    bool statusReady = _readyButton->update(_mousePos, _isClicking);
     _readyButton->draw(*_window);
 
     if (statusReady) {
         _state = LobbyStateEnum::READY;
-        _is_clicking = false;
+        _isClicking = false;
         std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
     }
 }
@@ -148,12 +148,12 @@ void Lobby::_update() {
         case sf::Event::MouseButtonPressed:
             if (_event.mouseButton.button == sf::Mouse::Left) {
                 _lastClick = _mousePos;
-                _is_clicking = true;
+                _isClicking = true;
             }
             break;
         case sf::Event::MouseButtonReleased:
             if (_event.mouseButton.button == sf::Mouse::Left) {
-                _is_clicking = false;
+                _isClicking = false;
             }
             break;
         default:

@@ -34,11 +34,11 @@ class Game
         void _setSnake(uint id, std::vector<sf::Vector2i> snakePos);
         void _setApple(sf::Vector2i applePos); // Not defined yet
 
-        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _sprite_middle_snake;
-        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _sprite_head_snake;
-        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _sprite_tail_snake;
-        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _sprite_angle_snake;
-        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _sprite_apple;
+        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _spriteMiddleSnake;
+        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _spriteHeadSnake;
+        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _spriteTailSnake;
+        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _spriteAngleSnake;
+        std::pair<std::shared_ptr<sf::Texture>, sf::Sprite> _spriteApple;
 
         std::shared_ptr<sf::TcpSocket> _socket;
         std::shared_ptr<std::pair<std::string, ushort>> _ipPort;
@@ -46,8 +46,8 @@ class Game
         sf::Event _event;
         sf::Vector2<uint> _windowSize;
         sf::Vector2<uint> _gameSize;
-        std::vector<std::vector<sf::Vector2i>> _pos_snakes;
-        sf::Vector2i _pos_apple;
+        std::vector<std::vector<sf::Vector2i>> _posSnakes;
+        sf::Vector2i _posApple;
         float _scale;
 };
 
