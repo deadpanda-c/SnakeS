@@ -22,7 +22,7 @@ class Game
         ~Game();
 
         void setWindow(std::shared_ptr<sf::RenderWindow> window);
-        void setGameSize(sf::Vector2<uint> gameSize);
+        void setGameSize(uint gameSize);
         void setSocket(std::shared_ptr<sf::TcpSocket> socket);
         void setIpPort(std::shared_ptr<std::pair<std::string, ushort>> ipPort);
         int run();
@@ -44,8 +44,8 @@ class Game
         std::shared_ptr<std::pair<std::string, ushort>> _ipPort;
         std::shared_ptr<sf::RenderWindow> _window;
         sf::Event _event;
-        sf::Vector2<uint> _windowSize;
-        sf::Vector2<uint> _gameSize;
+        uint _windowSize;
+        uint _gameSize;
         std::vector<std::vector<sf::Vector2i>> _posSnakes;
         sf::Vector2i _posApple;
         float _scale;

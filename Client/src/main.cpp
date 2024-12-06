@@ -7,7 +7,7 @@ int main(int argc, char **argv) {
     if (ipPort.first == "__EXIT__")
         return ipPort.second;
     core.setIpPort(ipPort);
-    core.setWindowSize({800, 800});
-    core.setGameSize({20, 20});
+    core.setWindowSize(800);
+    core.setGameSize(20);
     return core.run();
 }

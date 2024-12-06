@@ -4,7 +4,7 @@ Game::Game() {}
 
 Game::~Game() {}
 
-void Game::setGameSize(sf::Vector2<uint> gameSize) {
+void Game::setGameSize(uint gameSize) {
     _gameSize = gameSize;
 }
 
@@ -21,8 +21,8 @@ void Game::setWindow(std::shared_ptr<sf::RenderWindow> window) {
 }
 
 void Game::_setup() {
-    _windowSize = _window->getSize();
-    _scale = _windowSize.x / _gameSize.x;
+    _windowSize = _window->getSize().x;
+    _scale = _windowSize / _gameSize;
 
     // load all the sprites and textures
     _spriteMiddleSnake = Tools::loadSprite(Constants::SNAKE_MIDDLE, _scale / Constants::SPRITE_SIZE);
@@ -46,19 +46,19 @@ void Game::_setup() {
 void Game::_draw() { // todo: handle of the snake is shorter than 3
     _window->clear();
     // draw the grid for debug purposes
-    for (uint i = 0; i <= _gameSize.x; i++) {
+    for (uint i = 0; i <= _gameSize; i++) {
         sf::Vertex line[] = {
             sf::Vertex(sf::Vector2f(i * _scale, 0)),
-            sf::Vertex(sf::Vector2f(i * _scale, _windowSize.y))
+            sf::Vertex(sf::Vector2f(i * _scale, _windowSize))
         };
         line[0].color = sf::Color(255, 255, 255, 64);
         line[1].color = sf::Color(255, 255, 255, 64);
         _window->draw(line, 2, sf::Lines);
     }
-    for (uint i = 0; i <= _gameSize.y; i++) {
+    for (uint i = 0; i <= _gameSize; i++) {
         sf::Vertex line[] = {
             sf::Vertex(sf::Vector2f(0, i * _scale)),
-            sf::Vertex(sf::Vector2f(_windowSize.x, i * _scale))
+            sf::Vertex(sf::Vector2f(_windowSize, i * _scale))
         };
         line[0].color = sf::Color(255, 255, 255, 64);
         line[1].color = sf::Color(255, 255, 255, 64);
