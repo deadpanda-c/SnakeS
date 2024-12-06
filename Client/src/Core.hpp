@@ -9,20 +9,20 @@
 
 class Core {
     public:
-        Core(std::pair<uint, uint> windowSize, std::pair<uint, uint> gameSize, std::pair<std::string, ushort> ipPort);
+        Core(uint windowSize, uint gameSize, std::pair<std::string, ushort> ipPort);
         Core();
         ~Core();
 
-        void setWindowSize(std::pair<uint, uint> windowSize);
-        void setGameSize(std::pair<uint, uint> gameSize);
+        void setWindowSize(uint windowSize);
+        void setGameSize(uint gameSize);
         void setIpPort(std::pair<std::string, ushort> ipPort);
         int run();
 
     private:
         int _setup();
 
-        std::pair<uint, uint> _windowSize;
-        std::pair<uint, uint> _gameSize;
+        uint _windowSize;
+        uint _gameSize;
 
         std::shared_ptr<std::pair<std::string, ushort>> _ipPort;
         std::shared_ptr<sf::RenderWindow> _window;

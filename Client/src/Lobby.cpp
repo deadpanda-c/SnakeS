@@ -17,15 +17,21 @@ void Lobby::setIpPort(std::shared_ptr<std::pair<std::string, ushort>> ipPort) {
 }
 
 void Lobby::_setup() {
+    _gameStarted = false;
     _windowSize = _window->getSize();
     _state = LobbyStateEnum::MAIN;
-    _scale = _windowSize.x / 100;
-    _font.loadFromFile(FONT);
-    _connectButton = std::make_unique<Button>(sf::Vector2f(25 * _scale, 65 * _scale), sf::Vector2f(50 * _scale, 12.5 * _scale), "Connect", 8 * _scale);
-    _cancelButton = std::make_unique<Button>(sf::Vector2f(25 * _scale, 79 * _scale), sf::Vector2f(50 * _scale, 12.5 * _scale), "Cancel", 8 * _scale);
-    _retryButton = std::make_unique<Button>(sf::Vector2f(25 * _scale, 59 * _scale), sf::Vector2f(50 * _scale, 12.5 * _scale), "Retry", 8 * _scale);
-    _readyButton = std::make_unique<Button>(sf::Vector2f(25 * _scale, 65 * _scale), sf::Vector2f(50 * _scale, 12.5 * _scale), "Ready", 8 * _scale);
+    _scale = _windowSize.x / 128.0;
+    _font.loadFromFile(Constants::FONT);
+    
+    _connectButton = std::make_unique<Button>(sf::Vector2f(32 * _scale, 95 * _scale), sf::Vector2f(64 * _scale, 12.5 * _scale), "Connect", 8 * _scale);
+    _retryButton = std::make_unique<Button>(sf::Vector2f(32 * _scale, 85 * _scale), sf::Vector2f(64 * _scale, 12.5 * _scale), "Retry", 8 * _scale);
+    _cancelButton = std::make_unique<Button>(sf::Vector2f(32 * _scale, 105 * _scale), sf::Vector2f(64 * _scale, 12.5 * _scale), "Cancel", 8 * _scale);
+    _readyButton = std::make_unique<Button>(sf::Vector2f(32 * _scale, 80 * _scale), sf::Vector2f(64 * _scale, 12.5 * _scale), "Ready", 8 * _scale);
 
+    _mainBackground = Tools::loadSprite(Constants::MAIN_BACKGROUND, _scale);
+    _mainBackground.second.setPosition(_windowSize.x / 2, _windowSize.y / 2);
+
+    _cursor = Tools::loadSprite(Constants::CURSOR, _scale / 2.0);
 }
 
 void Lobby::_draw() {
@@ -46,17 +52,21 @@ void Lobby::_draw() {
             break;
     }
 
+    _cursor.second.setPosition(_mousePos.x, _mousePos.y);
+    _window->draw(_cursor.second);
     _window->display();
 }
 
 void Lobby::_drawMain() {
-    bool status = _connectButton->update(_mousePos, _is_clicking);
+    _window->draw(_mainBackground.second);
+
+    bool status = _connectButton->update(_mousePos, _isClicking);
     _connectButton->draw(*_window);
 
     if (status) {
         _state = LobbyStateEnum::CONNECTING;
         _failed_connection = false;
-        _is_clicking = false;
+        _isClicking = false;
         std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
     }
 }
@@ -74,20 +84,20 @@ void Lobby::_drawConnecting() {
             _failed_connection = true;
         }
     } else {
-        bool statusRetry = _retryButton->update(_mousePos, _is_clicking);
+        bool statusRetry = _retryButton->update(_mousePos, _isClicking);
         _retryButton->draw(*_window);
 
         if (statusRetry) {
             _failed_connection = false;
-            _is_clicking = false;
+            _isClicking = false;
         }
 
-        bool statusCancel = _cancelButton->update(_mousePos, _is_clicking);
+        bool statusCancel = _cancelButton->update(_mousePos, _isClicking);
         _cancelButton->draw(*_window);
 
         if (statusCancel) {
             _state = LobbyStateEnum::MAIN;
-            _is_clicking = false;
+            _isClicking = false;
             std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
         }
 
@@ -103,12 +113,12 @@ void Lobby::_drawConnected() {
 
     // listen to the server for the number of players connected and the player ID
 
-    bool statusReady = _readyButton->update(_mousePos, _is_clicking);
+    bool statusReady = _readyButton->update(_mousePos, _isClicking);
     _readyButton->draw(*_window);
 
     if (statusReady) {
         _state = LobbyStateEnum::READY;
-        _is_clicking = false;
+        _isClicking = false;
         std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
     }
 }
@@ -121,10 +131,12 @@ void Lobby::_drawReady() {
 void Lobby::_update() {
     while (_window->pollEvent(_event)) {
         _mousePos = sf::Mouse::getPosition(*_window);
-        if (_event.type == sf::Event::Closed) {
+        switch (_event.type)
+        {
+        case sf::Event::Closed:
             _window->close();
-        }
-        if (_event.type == sf::Event::KeyPressed) {
+            break;
+        case sf::Event::KeyPressed:
             switch (_event.key.code) {
                 case sf::Keyboard::Escape:
                     _window->close();
@@ -132,12 +144,20 @@ void Lobby::_update() {
                 default:
                     break;
             }
-        }
-        if (_event.type == sf::Event::MouseButtonPressed) {
+            break;
+        case sf::Event::MouseButtonPressed:
             if (_event.mouseButton.button == sf::Mouse::Left) {
                 _lastClick = _mousePos;
-                _is_clicking = true;
+                _isClicking = true;
             }
+            break;
+        case sf::Event::MouseButtonReleased:
+            if (_event.mouseButton.button == sf::Mouse::Left) {
+                _isClicking = false;
+            }
+            break;
+        default:
+            break;
         }
     }
 }
