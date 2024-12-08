@@ -20,7 +20,12 @@ void Server::launch()
 
     while ((m_clients_number < 1 || end - start < 30) && m_clients_number < 4) {
         if (m_server.accept(m_clients[m_clients_number]) == sf::Socket::Done) {
+            sf::Packet pack{};
+            BinaryPacket packet{BinaryPacket::CLIENT_ID};
+            packet.addByte(m_clients_number + '0');
+            pack << packet.serialize();
             m_clients[m_clients_number].setBlocking(false);
+            m_clients[m_clients_number].send(pack);
             m_clients_number++;
         }
         end = time(nullptr);

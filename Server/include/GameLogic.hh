@@ -6,6 +6,7 @@
 #pragma once
 
 #include <SFML/Network/TcpSocket.hpp>
+#include <SFML/Network/UdpSocket.hpp>
 #include <Snake.hh>
 #include <array>
 #include <vector>
@@ -19,11 +20,11 @@ class GameLogic
 {
     public:
         GameLogic();
-        GameLogic(GameLogic const &to_copy) = default;
-        GameLogic(GameLogic &&to_move) = default;
+        GameLogic(GameLogic const &to_copy) = delete;
+        GameLogic(GameLogic &&to_move) = delete;
         ~GameLogic() = default;
-        GameLogic &operator=(GameLogic const &to_copy) = default;
-        GameLogic &operator=(GameLogic &&to_move) = default;
+        GameLogic &operator=(GameLogic const &to_copy) = delete;
+        GameLogic &operator=(GameLogic &&to_move) = delete;
 
         void start_game_logic(std::array<sf::TcpSocket, 4> &clients, uint clients_number);
 
@@ -33,6 +34,7 @@ class GameLogic
         uint m_width{30};
         Coord m_fruit{};
         std::vector<Snake> m_players;
+        std::array<sf::UdpSocket, 4> m_udp_clients;
 
         void generate_fruit();
         void create_players(uint clients_number);

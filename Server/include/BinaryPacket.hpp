@@ -1,4 +1,5 @@
 
+#include <SFML/Network/Packet.hpp>
 #include <cstdint>
 #include <stdexcept>
 #include <string>
@@ -16,7 +17,8 @@ class BinaryPacket
             KEEP_ALIVE = 0x06,
             FRUIT_STATUS = 0X07,
             DEATH = 0X08,
-            EAT_FRUIT = 0X09
+            EAT_FRUIT = 0X09,
+            CLIENT_ID = 0X10
         };
 
         BinaryPacket(PacketType type);
@@ -43,3 +45,21 @@ class BinaryPacket
         // Helper to check if payload access is in bounds
         void checkIndex(size_t index, size_t size) const;
 };
+
+inline sf::Packet &operator<<(sf::Packet &packet, const std::vector<uint8_t> &serialize_data)
+{
+    for (unsigned char i : serialize_data)
+        packet << i;
+    return packet;
+}
+
+inline sf::Packet &operator>>(sf::Packet &packet, std::vector<uint8_t> &serialize_data)
+{
+    uint8_t x;
+
+    for (int i{0}; i < packet.getDataSize(); i++) {
+        packet >> x;
+        serialize_data.emplace_back(x);
+    }
+    return packet;
+}
