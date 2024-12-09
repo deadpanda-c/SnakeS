@@ -13,6 +13,12 @@ find_library(LIBSFML_SYSTEM sfml-system)
 find_library(LIBSFML_AUDIO sfml-audio)
 find_library(LIBSFML_NETWORK sfml-network)
 
+include_directories(../libs/binary_protocol/include)
+add_subdirectory(../libs/binary_protocol binary_protocol)
+
+include_directories(../libs/client_communication/include)
+add_subdirectory(../libs/client_communication client_communication)
+
 set(SOURCES
     src/main.cpp
     src/Core.cpp
@@ -25,3 +31,4 @@ set(SOURCES
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} ${LIBSFML_GRAPHICS} ${LIBSFML_WINDOW} ${LIBSFML_SYSTEM} ${LIBSFML_AUDIO} ${LIBSFML_NETWORK})
+target_link_libraries(${PROJECT_NAME} communications client_network)
