@@ -22,6 +22,10 @@ void GameLogic::start_game_logic(std::array<sf::TcpSocket, 4> &clients, uint cli
     generate_fruit();
     create_players(clients_number);
     update_game(clients, clients_number);
+    for (size_t i{0}; i <= clients_number; i++) {
+        m_udp_clients[i].bind(clients[i].getLocalPort());
+        m_udp_clients[i].setBlocking(false);
+    }
 
     while (m_game_running) {
         if (clock.getElapsedTime().asMilliseconds() > 300) {
@@ -51,24 +55,6 @@ void GameLogic::create_players(uint clients_number)
                                i);
 }
 
-inline sf::Packet &operator<<(sf::Packet &packet, const std::vector<uint8_t> &serialize_data)
-{
-    for (unsigned char i : serialize_data)
-        packet << i;
-    return packet;
-}
-
-inline sf::Packet &operator>>(sf::Packet &packet, std::vector<uint8_t> &serialize_data)
-{
-    uint8_t x;
-
-    for (int i{0}; i < packet.getDataSize(); i++) {
-        packet >> x;
-        serialize_data.emplace_back(x);
-    }
-    return packet;
-}
-
 void GameLogic::update_game(std::array<sf::TcpSocket, 4> &clients, uint clients_number)
 {
     BinaryPacket fruit_packet{BinaryPacket::FRUIT_STATUS};
@@ -79,16 +65,22 @@ void GameLogic::update_game(std::array<sf::TcpSocket, 4> &clients, uint clients_
     fruit_packet.addUint16(static_cast<short>(m_fruit.y_pos));
     packet << fruit_packet.serialize();
 
-    for (uint i{0}; i <= clients_number; i++)
-        clients[i].send(packet);
+    for (uint i{0}; i <= clients_number; i++) {
+        auto port{clients[i].getRemotePort()};
+        auto address{clients[i].getRemoteAddress()};
+        m_udp_clients[i].send(packet, address, port);
+    }
     packet.clear();
 
     player_packet.addString("");
     for (uint i{0}; i <= clients_number; i++)
         m_players[i].edit_packet(player_packet);
     packet << player_packet.serialize();
-    for (uint i{0}; i <= clients_number; i++)
-        clients[i].send(packet);
+    for (uint i{0}; i <= clients_number; i++) {
+        auto port{clients[i].getRemotePort()};
+        auto address{clients[i].getRemoteAddress()};
+        m_udp_clients[i].send(packet, address, port);
+    }
 }
 
 void GameLogic::handle_clients(std::array<sf::TcpSocket, 4> &clients, uint clients_number)
@@ -97,7 +89,9 @@ void GameLogic::handle_clients(std::array<sf::TcpSocket, 4> &clients, uint clien
     std::vector<uint8_t> serialize_data{};
 
     for (uint i{0}; i <= clients_number; i++) {
-        if (clients[clients_number].receive(packet) == sf::Socket::Done) {
+        auto port{clients[i].getRemotePort()};
+        auto address{clients[i].getRemoteAddress()};
+        if (m_udp_clients[i].receive(packet, address, port) == sf::Socket::Done) {
             if (packet >> serialize_data) {
                 BinaryPacket unserialize_data{BinaryPacket::deserialize(serialize_data)};
                 if (unserialize_data.getType() == BinaryPacket::PLAYER_ACTION) {
@@ -122,8 +116,11 @@ void GameLogic::handle_colision(std::array<sf::TcpSocket, 4> &clients, uint clie
         if (m_players[i].is_colliding_wall(m_height, m_width)) {
             unserialize_data.addByte(static_cast<uint8_t>(i));
             packet << unserialize_data.serialize();
-            for (uint i{0}; i <= clients_number; i++)
-                clients[i].send(packet);
+            for (uint i{0}; i <= clients_number; i++) {
+                auto port{clients[i].getRemotePort()};
+                auto address{clients[i].getRemoteAddress()};
+                m_udp_clients[i].send(packet, address, port);
+            }
             continue;
         }
         for (uint j{0}; j <= clients_number; j++) {
@@ -132,8 +129,11 @@ void GameLogic::handle_colision(std::array<sf::TcpSocket, 4> &clients, uint clie
             if (m_players[j].is_colliding_it(m_players[i].get_head_pos()))
                 unserialize_data.addByte(static_cast<uint8_t>(i));
             packet << unserialize_data.serialize();
-            for (uint i{0}; i <= clients_number; i++)
-                clients[i].send(packet);
+            for (uint i{0}; i <= clients_number; i++) {
+                auto port{clients[i].getRemotePort()};
+                auto address{clients[i].getRemoteAddress()};
+                m_udp_clients[i].send(packet, address, port);
+            }
         }
         packet.clear();
     }
