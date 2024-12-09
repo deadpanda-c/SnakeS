@@ -67,7 +67,12 @@ void Lobby::_drawMain() {
         _state = LobbyStateEnum::CONNECTING;
         _failed_connection = false;
         _isClicking = false;
-        std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
+        std::vector<std::string> states = {"MAIN", "CONNECTING", "CONNECTED", "READY"};
+            if (_state < states.size()) {
+                std::cout << "Change lobby state: " << states[_state] << std::endl;
+            } else {
+                std::cerr << "Invalid state" << std::endl;
+            }
     }
 }
 
@@ -78,7 +83,12 @@ void Lobby::_drawConnecting() {
 
         if (status == sf::Socket::Done) {
             _state = LobbyStateEnum::CONNECTED;
-            std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
+            std::vector<std::string> states = {"MAIN", "CONNECTING", "CONNECTED", "READY"};
+            if (_state < states.size()) {
+                std::cout << "Change lobby state: " << states[_state] << std::endl;
+            } else {
+                std::cerr << "Invalid state" << std::endl;
+            }
         } else {
             std::cout << "Failed to connect to the server, socket status: " << status << std::endl;
             _failed_connection = true;
@@ -98,7 +108,12 @@ void Lobby::_drawConnecting() {
         if (statusCancel) {
             _state = LobbyStateEnum::MAIN;
             _isClicking = false;
-            std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
+            std::vector<std::string> states = {"MAIN", "CONNECTING", "CONNECTED", "READY"};
+            if (_state < states.size()) {
+                std::cout << "Change lobby state: " << states[_state] << std::endl;
+            } else {
+                std::cerr << "Invalid state" << std::endl;
+            }
         }
 
     }
@@ -119,7 +134,12 @@ void Lobby::_drawConnected() {
     if (statusReady) {
         _state = LobbyStateEnum::READY;
         _isClicking = false;
-        std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
+        std::vector<std::string> states = {"MAIN", "CONNECTING", "CONNECTED", "READY"};
+        if (_state < states.size()) {
+            std::cout << "Change lobby state: " << states[_state] << std::endl;
+        } else {
+            std::cerr << "Invalid state" << std::endl;
+        }
     }
 }
 
