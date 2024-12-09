@@ -1,6 +1,8 @@
 #include "Core.hpp"
 
 int main(int argc, char **argv) {
+    if (argc != 3)
+        return 84;
     std::pair<std::string, ushort> ipPort = Tools::parseArguments(argc, argv);
     Core core;
 
