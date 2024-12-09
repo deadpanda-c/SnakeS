@@ -15,6 +15,8 @@
 #include "Tools.hpp"
 #include "Button.hpp"
 
+#include "BinaryPacket.hpp"
+
 class Lobby
 {
     public:
@@ -67,6 +69,8 @@ class Lobby
         int playerID;
         int playerCount;
 
+        // binary library
+        std::shared_ptr<BinaryPacket> _binaryPacket;
 };
 
 #endif // LOBBY_HPP

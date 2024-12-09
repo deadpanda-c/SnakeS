@@ -17,12 +17,13 @@ void Lobby::setIpPort(std::shared_ptr<std::pair<std::string, ushort>> ipPort) {
 }
 
 void Lobby::_setup() {
+    _binaryPacket = std::make_shared<BinaryPacket>(BinaryPacket::PLAYER_JOIN);
     _gameStarted = false;
     _windowSize = _window->getSize();
     _state = LobbyStateEnum::MAIN;
     _scale = _windowSize.x / 128.0;
     _font.loadFromFile(Constants::FONT);
-    
+
     _connectButton = std::make_unique<Button>(sf::Vector2f(32 * _scale, 95 * _scale), sf::Vector2f(64 * _scale, 12.5 * _scale), "Connect", 8 * _scale);
     _retryButton = std::make_unique<Button>(sf::Vector2f(32 * _scale, 85 * _scale), sf::Vector2f(64 * _scale, 12.5 * _scale), "Retry", 8 * _scale);
     _cancelButton = std::make_unique<Button>(sf::Vector2f(32 * _scale, 105 * _scale), sf::Vector2f(64 * _scale, 12.5 * _scale), "Cancel", 8 * _scale);
@@ -67,7 +68,7 @@ void Lobby::_drawMain() {
         _state = LobbyStateEnum::CONNECTING;
         _failed_connection = false;
         _isClicking = false;
-        std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
+//        std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
     }
 }
 
@@ -78,7 +79,7 @@ void Lobby::_drawConnecting() {
 
         if (status == sf::Socket::Done) {
             _state = LobbyStateEnum::CONNECTED;
-            std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
+ //           std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
         } else {
             std::cout << "Failed to connect to the server, socket status: " << status << std::endl;
             _failed_connection = true;
@@ -98,7 +99,7 @@ void Lobby::_drawConnecting() {
         if (statusCancel) {
             _state = LobbyStateEnum::MAIN;
             _isClicking = false;
-            std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
+  //          std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
         }
 
     }
@@ -119,7 +120,7 @@ void Lobby::_drawConnected() {
     if (statusReady) {
         _state = LobbyStateEnum::READY;
         _isClicking = false;
-        std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
+   //     std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
     }
 }
 
