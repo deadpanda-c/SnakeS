@@ -76,12 +76,14 @@ void Lobby::_drawConnecting() {
     // try to connect to the server, if it fails, display a retry button
     if (!_failed_connection) {
         sf::Socket::Status status = _socket->connect(_ipPort->first, _ipPort->second);
+        std::cout << "Connecting to " << _ipPort->first << ":" << _ipPort->second << std::endl;
 
         if (status == sf::Socket::Done) {
             _state = LobbyStateEnum::CONNECTED;
  //           std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
+            std::cout << "Connected to the server" << std::endl;
         } else {
-            std::cout << "Failed to connect to the server, socket status: " << status << std::endl;
+            std::cerr << "Failed to connect to the server, socket status: " << status << std::endl;
             _failed_connection = true;
         }
     } else {
@@ -118,9 +120,27 @@ void Lobby::_drawConnected() {
     _readyButton->draw(*_window);
 
     if (statusReady) {
+        // Create a BinaryPacket with a pre-defined type
+        BinaryPacket packet(BinaryPacket::PLAYER_ACTION);
+        packet.addByte(5);  // Player ID
+        packet.addByte(0x00); // Direction: Up
+
+        // Serialize packet to send
+        std::vector<uint8_t> data = packet.serialize();
+
+        // Create the header according to the protocol
+        uint8_t header = (BinaryPacket::PLAYER_ACTION << 4) | data.size();
+
+        // Prepend the header to the data
+        data.insert(data.begin(), header);
+
+        // Send the packet using the Communication class in UDP mode
+        Communication comm(_ipPort->first, _ipPort->second, Communication::ConnectionType::UDP);
+        comm.connectToServer();
+        comm.sendToServer(std::string(data.begin(), data.end()));
+
         _state = LobbyStateEnum::READY;
         _isClicking = false;
-   //     std::cout << "Change lobby state: " << (std::array<std::string, 4>{"MAIN", "CONNECTING", "CONNECTED", "READY"}[_state]) << std::endl;
     }
 }
 

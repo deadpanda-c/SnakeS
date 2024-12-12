@@ -9,4 +9,4 @@ include_directories(./include)
 add_library(communications SHARED ${SOURCES})
 
 # add_executable(sample main.cpp)
-target_link_libraries(sample communications)
+# target_link_libraries(sample communications)

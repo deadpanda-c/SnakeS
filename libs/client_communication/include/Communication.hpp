@@ -14,6 +14,10 @@
 
 class Communication {
   public:
+    enum class ConnectionType {
+      TCP,
+      UDP
+    };
     class ConnectionError : public std::exception {
       public:
         ConnectionError(const char *msg) : _msg(msg) {}
@@ -22,7 +26,7 @@ class Communication {
         const char *_msg;
     };
     Communication();
-    Communication(std::string ip, unsigned short port);
+    Communication(std::string ip, unsigned short port, Communication::ConnectionType type);
     ~Communication();
 
 
@@ -30,6 +34,7 @@ class Communication {
     void sendToServer(std::string message);
     std::string receiveFromServer();
   private:
+    ConnectionType _comm_type;
     std::string _ip;
     unsigned short _port;
 

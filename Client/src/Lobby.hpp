@@ -16,6 +16,7 @@
 #include "Button.hpp"
 
 #include "BinaryPacket.hpp"
+#include "Communication.hpp"
 
 class Lobby
 {

@@ -5,7 +5,7 @@ Communication::Communication() : _ip("127.0.0.1"), _port(4242)
   this->init();
 }
 
-Communication::Communication(std::string ip, unsigned short port) : _ip(ip), _port(port)
+Communication::Communication(std::string ip, unsigned short port, Communication::ConnectionType comm_type) : _comm_type(comm_type), _ip(ip), _port(port) 
 {
   this->init();
 }
